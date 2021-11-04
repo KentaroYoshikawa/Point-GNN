@@ -489,7 +489,8 @@ class KittiDataset(object):
         Returns: a dictionary of calibrations.
         """
 
-        calib_file = join(self._calib_dir, self._file_list[frame_idx])+'.txt'
+        #calib_file = join(self._calib_dir, self._file_list[frame_idx])+'.txt'
+        calib_file = join(self._calib_dir, os.path.basename(self._calib_dir))+'.txt'
         with open(calib_file, 'r') as f:
             calib = {}
             for line in f:
@@ -712,7 +713,8 @@ class KittiDataset(object):
         MIN_HEIGHT = [40, 25, 25]
         MAX_OCCLUSION = [0, 1, 2]
         MAX_TRUNCATION = [0.15, 0.3, 0.5]
-        label_file = join(self._label_dir, self._file_list[frame_idx])+'.txt'
+        #label_file = join(self._label_dir, self._file_list[frame_idx])+'.txt'
+        label_file = join(self._label_dir, os.path.basename(self._label_dir))+'.txt'
         label_list = []
         with open(label_file, 'r') as f:
             for line in f:
@@ -721,6 +723,13 @@ class KittiDataset(object):
                 if line == '':
                     continue
                 fields = line.split(' ')
+
+                # >>> edited for KITTI tracking
+                if frame_idx != int(fields[0]):
+                    continue
+                fields = fields[2:]
+                # <<< edited for KITTI tracking
+
                 label['name'] = fields[0]
                 # 0=visible 1=partly occluded, 2=fully occluded, 3=unknown
                 label['truncation'] = float(fields[1])

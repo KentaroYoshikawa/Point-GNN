@@ -47,6 +47,7 @@ parser.add_argument('--output_dir', type=str,
                     default='',
                    help='Path to save the detection results'
                    'Default="CHECKPOINT_PATH/eval/"')
+parser.add_argument('--scene_number', required=True, type=str)
 args = parser.parse_args()
 VISUALIZATION_LEVEL = args.level
 IS_TEST = args.test
@@ -54,7 +55,7 @@ USE_BOX_MERGE = args.use_box_merge
 USE_BOX_SCORE = args.use_box_score
 DATASET_DIR = args.dataset_root_dir
 if args.dataset_split_file == '':
-    DATASET_SPLIT_FILE = os.path.join(DATASET_DIR, './3DOP_splits/val.txt')
+    DATASET_SPLIT_FILE = os.path.join(DATASET_DIR, '3DOP_splits/val.txt')
 else:
     DATASET_SPLIT_FILE = args.dataset_split_file
 if args.output_dir == '':
@@ -76,10 +77,10 @@ if IS_TEST:
         is_training=False)
 else:
     dataset = KittiDataset(
-        os.path.join(DATASET_DIR, 'image/training/image_2'),
-        os.path.join(DATASET_DIR, 'velodyne/training/velodyne/'),
-        os.path.join(DATASET_DIR, 'calib/training/calib/'),
-        os.path.join(DATASET_DIR, 'labels/training/label_2'),
+        os.path.join(DATASET_DIR, 'image/training', args.scene_number),
+        os.path.join(DATASET_DIR, 'velodyne/training', args.scene_number),
+        os.path.join(DATASET_DIR, 'calib/training', args.scene_number),
+        os.path.join(DATASET_DIR, 'labels/training', args.scene_number),
         DATASET_SPLIT_FILE,
         num_classes=config['num_classes'])
 NUM_TEST_SAMPLE = dataset.num_files

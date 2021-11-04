@@ -40,7 +40,7 @@ train_config = load_train_config(args.train_config_path)
 DATASET_DIR = args.dataset_root_dir
 if args.dataset_split_file == '':
     DATASET_SPLIT_FILE = os.path.join(DATASET_DIR,
-        './3DOP_splits/'+train_config['train_dataset'])
+        '3DOP_splits/'+train_config['train_dataset'])
 else:
     DATASET_SPLIT_FILE = args.dataset_split_file
 config_complete = load_config(args.config_path)
